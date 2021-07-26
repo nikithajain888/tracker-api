@@ -7,15 +7,9 @@ const about = require('./about.js');
 const issue = require('./issue.js');
 const auth = require('./auth.js');
 
-function getContext({ req }) {
-  const user = auth.getUser(req);
-  return { user };
-}
-
 const resolvers = {
   Query: {
     about: about.getMessage,
-    user: auth.resolveUser,
     issueList: issue.list,
     issue: issue.get,
     issueCounts: issue.counts,
@@ -29,6 +23,11 @@ const resolvers = {
   },
   GraphQLDate,
 };
+
+function getContext({ req }) {
+  const user = auth.getUser(req);
+  return { user };
+}
 
 const server = new ApolloServer({
   typeDefs: fs.readFileSync('schema.graphql', 'utf-8'),
